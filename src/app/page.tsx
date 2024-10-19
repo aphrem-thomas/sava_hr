@@ -2,6 +2,8 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div>sava hr</div>
+    <div className="bg-cover h-screen bg-[url('/images/savahr-cover.jpg')]">
+
+    </div>
   );
 }
