@@ -5,7 +5,11 @@ import { useEffect, useState } from "react";
 export default function Navbar() {
     const [scrollY, setScrollY]=useState(0)
     const [transparentBG, setTransparentBG] = useState(true)
-    const windowHeight = window.innerHeight
+    let windowHeight = 0
+    if (typeof window !== "undefined") {
+        windowHeight = window.innerHeight
+      }
+     
     useEffect(()=>{
         window.addEventListener('scroll', handleScroll);
         return ()=>{

@@ -13,10 +13,11 @@ export default function Home() {
               d="M0,255 L80,255 C160,255,320,255,480,222.3 C640,190,800,124,960,83.5 C1120,43,1280,26,1440,50.8 L1440,255 L0,255 Z"
             ></path>
           </svg>
-          <div className="content bg-white h-64 flex justify-center">
-            <div className="container flex justify-between h-full items-center relative">
+          <div className="content bg-white flex justify-center">
+            <div className="container p-12 flex justify-between items-center relative">
               <div className="punchline text-[48px]">Something here...</div>
-              <div className="dialogue w-96 text-[24px] font-medium text-justify text-primaryfont absolute right-0 bottom-[40px]">
+              <div className="dialogue w-96 text-[18px] 2xl:text-[24px] font-medium text-center text-primaryfont right-0 top-0
+              2xl:absolute 2xl:right-[-250px] 2xl:top-[-100px]">
                 HR is the bridge between people, management, and leadership at
                 your organization. Ensure you have the right technology,
                 partnership, and culture strategies in one place to positively
@@ -41,21 +42,21 @@ export default function Home() {
           <div className="features flex mt-32 justify-around w-full">
             <div className="f1 flex-col flex w-80 items-center">
               <SchoolIcon className="text-theme !text-[40px]"/>
-              <div className="description text-center text-[20px] font-medium">
+              <div className="description text-center text-[16px] 2xl:text-[20px] font-medium">
                 {"Provide your people and managers with leadership tools that see the whole employee — at any stage in their lifecycle — to deliver personalized support, foster belonging, and enable high performance."}
               </div>
             </div>
 
             <div className="f1 flex-col flex w-80 items-center">
               <SchoolIcon className="text-theme !text-[40px]"/>
-              <div className="description text-center text-[20px] font-medium">
+              <div className="description text-center text-[16px] 2xl:text-[20px] font-medium">
                 {"Provide your people and managers with leadership tools that see the whole employee — at any stage in their lifecycle — to deliver personalized support, foster belonging, and enable high performance."}
               </div>
             </div>
 
             <div className="f1 flex-col flex w-80 items-center">
               <SchoolIcon className="text-theme !text-[40px]"/>
-              <div className="description text-center text-[20px] font-medium">
+              <div className="description text-center text-[16px] 2xl:text-[20px] font-medium">
                 {"Provide your people and managers with leadership tools that see the whole employee — at any stage in their lifecycle — to deliver personalized support, foster belonging, and enable high performance."}
               </div>
             </div>
