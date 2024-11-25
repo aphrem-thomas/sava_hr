@@ -25,7 +25,7 @@ export default function Navbar() {
         }
     }
   return (
-    <div className={`w-full flex justify-center items-center fixed z-10 h-16 md:h-28 ${transparentBG?'bg-transparent text-white':'bg-white text-primaryfont border-b border-solid'}`}>
+    <div className={`w-full flex justify-center items-center fixed z-10 h-16 md:h-28 ${transparentBG?'bg-transparent text-white':'bg-white text-primaryfont border-primaryfont border-b-2 border-solid'}`}>
         <div className="container justify-between hidden md:flex">
             <div className="logo text-4xl font-bold">SavaHR</div>
             <div className="navigation">

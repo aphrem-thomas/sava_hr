@@ -35,8 +35,19 @@ export default function ResponsiveNavbar(props: Props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [transparentBG, setTransparentBG] = useState(true);
   let windowHeight = 0;
+  let windowWidth = 0;
+  let transparentThreshold = 0;
   if (typeof window !== "undefined") {
     windowHeight = window.innerHeight;
+    windowWidth = window.innerWidth;
+    console.log("window width", windowWidth)
+    if(windowWidth<431){
+      transparentThreshold=200
+    }else if(windowWidth>430 && windowWidth<1435){
+      transparentThreshold=400
+    } else if(windowWidth>1435){
+      transparentThreshold=900
+    }
   }
 
   useEffect(() => {
@@ -47,7 +58,8 @@ export default function ResponsiveNavbar(props: Props) {
   }, []);
 
   const handleScroll = () => {
-    if (windowHeight - window.scrollY <= 370) {
+    console.log("sta",windowWidth ,window.scrollY)
+    if (window.scrollY >= transparentThreshold) {
       setTransparentBG(false);
     } else {
       setTransparentBG(true);
@@ -91,6 +103,7 @@ export default function ResponsiveNavbar(props: Props) {
         sx={{
           backgroundColor:transparentBG?'transparent':'#FFF',
           color:transparentBG?'#FFF':'#53565A',
+          border:transparentBG?'':'1px solid #53565A',
           boxShadow:'unset',
         }}
         className={`w-full flex justify-center items-center fixed z-10 !h-16  md:h-28`}
