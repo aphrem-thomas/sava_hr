@@ -25,8 +25,8 @@ export default function Navbar() {
         }
     }
   return (
-    <div className={`w-full flex justify-center items-center fixed z-10 h-28 ${transparentBG?'bg-transparent text-white':'bg-white text-primaryfont border-b border-solid'}`}>
-        <div className="container flex justify-between">
+    <div className={`w-full flex justify-center items-center fixed z-10 h-16 md:h-28 ${transparentBG?'bg-transparent text-white':'bg-white text-primaryfont border-b border-solid'}`}>
+        <div className="container justify-between hidden md:flex">
             <div className="logo text-4xl font-bold">SavaHR</div>
             <div className="navigation">
                 {["Contact", "Jobs", "About Us", "Resources"].map((item)=>{
@@ -35,6 +35,10 @@ export default function Navbar() {
                     )
                 })}
             </div>
+        </div>
+        <div className="mobileview w-full flex justify-center md:hidden relative">
+            <div className="logo text-3xl align-middle">SavaHR</div>
+            <div className="menu absolute right-4">=</div>
         </div>
     </div>
   );
