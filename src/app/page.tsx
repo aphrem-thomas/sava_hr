@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 const whySavaHR = () => (
  <>
           <div className="image md:w-1/2 2xl:w-1/3">
-              <img className="contain h-48 md:h-72 w-full border-solid border rounded-lg object-cover md:object-fill" src="/images/discuss.jpg"></img>
+              <img className="contain h-48 md:h-72 w-full border-solid border rounded-lg object-cover md:object-fill" src="/images/discuss-compress.jpg"></img>
             </div>
             <div className="content md:w-1/2 md:ml-4 2xl:ml-10">
               <div className="md:hidden mt-8 whysavahr text-2xl">
@@ -28,7 +28,7 @@ export default function Home() {
                 impact employees and business goals."
   return (
     <div className="home w-full">
-      <div className="homebg hidden md:block w-full md:h-full h-1/4 left-0 top-0 fixed bg-cover -z-10 bg-[url('/images/savahr-cover.jpg')]"></div>
+      <div className="homebg hidden md:block w-full md:h-full h-1/4 left-0 top-0 fixed bg-cover -z-10 bg-[url('/images/sava-hr-cover.jpg')]"></div>
       <div className="bg-cover h-full md:h-screen md:bg-transparent flex-col md:content-end">
         <div className="md:hidden [clip-path:ellipse(72%_51%_at_50%_33%)] homebg-mobile md:block w-full h-64 bg-cover -z-10 bg-[url('/images/savahr-cover.jpg')]"></div>
         <div className="waveSection bg-transparent flex-col md:content-end">
