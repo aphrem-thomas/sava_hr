@@ -18,6 +18,7 @@ import Button from "@mui/material/Button";
 import Container from '@mui/material/Container';
 import Link from 'next/link'
 import { useEffect, useState } from "react";
+import { usePathname } from 'next/navigation'
 
 interface Props {
   /**
@@ -32,11 +33,17 @@ const navItems = ["Home", "About", "Contact"];
 
 export default function ResponsiveNavbar(props: Props) {
   const win = props.window;
+  const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [transparentBG, setTransparentBG] = useState(true);
   let windowHeight = 0;
   let windowWidth = 0;
   let transparentThreshold = 0;
+  const routes= [
+    {id:'contact', name:'Contact'},
+    {id:'jobs', name:'Jobs'},
+    {id:'events', name:'Events'},
+]
   if (typeof window !== "undefined") {
     windowHeight = window.innerHeight;
     windowWidth = window.innerWidth;
@@ -77,12 +84,12 @@ export default function ResponsiveNavbar(props: Props) {
       </Typography>
       <Divider />
       <List>
-        {["Contact", "Jobs", "About Us", "Resources"].map((item)=>{
+        {routes.map((item)=>{
                     return(
-                      <ListItem key={item} disablePadding sx={{ textAlign: "center", width:"100%" }}>
-                        <Link href={item}>
+                      <ListItem key={item.id} disablePadding sx={{ textAlign: "center", width:"100%" }}>
+                        <Link href={item.id}>
                         <ListItemButton sx={{ textAlign: "center", width:"100%" }}>
-                          <ListItemText primary={item} />
+                          <ListItemText primary={item.name} />
                         </ListItemButton>
                         </Link>
                       </ListItem>
@@ -95,15 +102,17 @@ export default function ResponsiveNavbar(props: Props) {
   const container =
     win !== undefined ? () => win().document.body : undefined;
 
+  const transparentBackground = () => transparentBG&&pathname==='/'
+
   return (
     <Box sx={{ display: "flex"}}>
       {/* <CssBaseline /> */}
       <AppBar
         component="nav"
         sx={{
-          backgroundColor:transparentBG?'transparent':'#FFF',
-          color:transparentBG?'#FFF':'#53565A',
-          border:transparentBG?'':'1px solid #53565A',
+          backgroundColor:transparentBackground()?'transparent':'#FFF',
+          color:transparentBackground()?'#FFF':'#53565A',
+          border:transparentBackground()?'':'1px solid #53565A',
           boxShadow:'unset',
         }}
         className={`w-full flex justify-center items-center fixed z-10 !h-16  md:h-28`}
@@ -120,13 +129,13 @@ export default function ResponsiveNavbar(props: Props) {
             <MenuIcon />
           </IconButton>
           <Box sx={{display:'flex', width:'100%', justifyContent:'space-between', alignItems:'center'}}>
-          <div className="logo text-4xl font-bold">SavaHR</div>
+          <div className="logo text-4xl font-bold"><Link href="/">SavaHR</Link></div>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-             {["Contact", "Jobs", "About Us", "Resources"].map((item)=>{
+             {routes.map((item)=>{
                     return(
-                      <Link href={item}>
-                          <Button key={item} sx={{fontSize:'24px', color:transparentBG?'#FFF':'#53565A' }}>
-                            {item}
+                      <Link href={item.id}>
+                          <Button key={item.id} sx={{fontSize:'24px', color:transparentBackground()?'#FFF':'#53565A' }}>
+                            {item.name}
                           </Button>
                           </Link>
                     )

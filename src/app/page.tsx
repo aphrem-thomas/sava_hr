@@ -3,6 +3,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import DevicesIcon from '@mui/icons-material/Devices';
 import VpnLockIcon from '@mui/icons-material/VpnLock';
 import Footer from "@/components/Footer";
+import bg from '@/images/sava-hr-cover.jpg'
 
 
 const whySavaHR = () => (
@@ -30,7 +31,7 @@ export default function Home() {
     <div className="home w-full">
       <div className="homebg hidden md:block w-full md:h-full h-1/4 left-0 top-0 fixed bg-cover -z-10 bg-[url('/images/sava-hr-cover.jpg')]"></div>
       <div className="bg-cover h-full md:h-screen md:bg-transparent flex-col md:content-end">
-        <div className="md:hidden [clip-path:ellipse(72%_51%_at_50%_33%)] homebg-mobile md:block w-full h-64 bg-cover -z-10 bg-[url('/images/savahr-cover.jpg')]"></div>
+        <div className="md:hidden [clip-path:ellipse(72%_51%_at_50%_33%)] homebg-mobile w-full h-64 bg-cover bg-[url('/images/sava-hr-cover.jpg')]"></div>
         <div className="waveSection bg-transparent flex-col md:content-end">
           <svg className="hidden md:block" viewBox="0 0 1440 150" xmlns="http://www.w3.org/2000/svg">
             <path
