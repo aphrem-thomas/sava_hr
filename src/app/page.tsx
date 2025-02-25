@@ -4,6 +4,7 @@ import DevicesIcon from '@mui/icons-material/Devices';
 import VpnLockIcon from '@mui/icons-material/VpnLock';
 import Footer from "@/components/Footer";
 import bg from '@/images/sava-hr-cover.jpg'
+import { Button, Card, CardActions, CardContent, CardMedia, Typography } from "@mui/material";
 
 
 const whySavaHR = () => (
@@ -42,10 +43,31 @@ export default function Home() {
           <div className="content bg-white flex h-[250px] justify-center">
             <div className="container p-12 flex flex-col md:flex-row justify-between items-center relative">
               <div className="punchline text-xl text-primaryfont md:text-[60px]">Human resource</div>
-              <div className="hidden md:block dialogue w-96 text-[18px] 2xl:text-[21px] font-medium text-justify md:text-center text-primaryfont right-0 top-0
+              <div className="findjobCard right-0 top-0
+              2xl:absolute 2xl:right-0 2xl:top-[-255px]">
+                <Card sx={{ maxWidth: 345 }}>
+                  <CardMedia
+                    sx={{ height: 240, border:"12px solid #FFF;"}}
+                    image="/images/discuss-compress.jpg"
+                    title="jobs"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      Looking for a job
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      {punchlineText}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <a href="/jobs"><Button size="small">Learn More</Button></a>
+                  </CardActions>
+                </Card>
+              </div>
+              {/* <div className="hidden md:block dialogue w-96 text-[18px] 2xl:text-[21px] font-medium text-justify md:text-center text-primaryfont right-0 top-0
               2xl:absolute 2xl:right-[-150px] 2xl:top-[-25px]">
                 {punchlineText}
-              </div>
+              </div> */}
               <div className="md:hidden  text-center text-primaryfont leading-[45px] mt-6 text-4xl">Build a people strategy that connects life and work.</div>
             </div>
           </div>

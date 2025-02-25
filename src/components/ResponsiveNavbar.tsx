@@ -36,13 +36,14 @@ export default function ResponsiveNavbar(props: Props) {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [transparentBG, setTransparentBG] = useState(true);
+  const [selection, setSelection] = useState('')
   let windowHeight = 0;
   let windowWidth = 0;
   let transparentThreshold = 0;
   const routes= [
-    {id:'contact', name:'Contact'},
     {id:'jobs', name:'Jobs'},
     {id:'events', name:'Events'},
+    {id:'contact', name:'Contact'},
 ]
   if (typeof window !== "undefined") {
     windowHeight = window.innerHeight;
@@ -59,6 +60,7 @@ export default function ResponsiveNavbar(props: Props) {
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
+    setSelection(getPath())
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -104,6 +106,8 @@ export default function ResponsiveNavbar(props: Props) {
 
   const transparentBackground = () => transparentBG&&pathname==='/'
 
+  const getPath = ():string => pathname.split('/').pop()??''
+
   return (
     <Box sx={{ display: "flex"}}>
       {/* <CssBaseline /> */}
@@ -129,18 +133,23 @@ export default function ResponsiveNavbar(props: Props) {
             <MenuIcon />
           </IconButton>
           <Box sx={{display:'flex', width:'100%', justifyContent:'space-between', alignItems:'center'}}>
-          <div className="logo text-4xl font-bold"><Link href="/">SavaHR</Link></div>
+          <div className="logo text-4xl font-bold"><Link onClick={()=>setSelection('/')} href="/">SavaHR</Link></div>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
              {routes.map((item)=>{
                     return(
                       <Link href={item.id}>
-                          <Button key={item.id} sx={{fontSize:'24px', color:transparentBackground()?'#FFF':'#53565A' }}>
+                          <Button onClick={()=>setSelection(item.id)} variant={selection===item.id?"outlined":"text"} key={item.id} sx={
+                            {
+                              fontSize:'24px',
+                              color:transparentBackground()?'#FFF':'#53565A',
+                              borderColor:'#53565A',
+                              borderRadius:'14px'
+                              }}>
                             {item.name}
                           </Button>
                           </Link>
                     )
                 })}
-                
           </Box>
           </Box>
         </Toolbar>
