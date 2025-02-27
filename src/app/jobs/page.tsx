@@ -8,7 +8,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
-import { Divider, InputBase, Pagination, Paper } from "@mui/material";
+import { Divider, FormControl, InputBase, InputLabel, MenuItem, Pagination, Paper, Select } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import DirectionsIcon from "@mui/icons-material/Directions";
@@ -161,6 +161,7 @@ let jobs = [
 export default function Jobs() {
   const [page, setPage] = useState(1)
   const [jobList, setJoblist] = useState<any>([...jobs.slice((page-1)*10, page*10)])
+  const [menuOpen, setMenuOpen] = useState(false)
   
   const handlePageChange=(e:any, value:any)=>{
     setPage(value)
@@ -176,6 +177,9 @@ export default function Jobs() {
           <div className="headertext text-lg mt-4">
             Search vast list of jobs in Canada
           </div>
+          <div className="addjobbutton">
+            <Button variant="text">Add Job</Button>
+          </div>
         </div>
         <div className="jobs flex flex-col">
           <div className="filter w-full mt-8">
@@ -188,7 +192,7 @@ export default function Jobs() {
                 width: "100%",
               }}
             >
-              <IconButton sx={{ p: "10px" }} aria-label="menu">
+              <IconButton onClick={()=>setMenuOpen(!menuOpen)} sx={{ p: "10px" }} aria-label="menu">
                 <MenuIcon />
               </IconButton>
               <InputBase
@@ -201,30 +205,66 @@ export default function Jobs() {
               </IconButton>
             </Paper>
           </div>
-          <div className="listing">
-            {jobList.map((job:any) => 
-                <Card variant="outlined" className="mt-4">
-                  <CardContent>
-                    <Box sx={{ color: "text.secondary", fontSize: "14px" }}>
-                      {job.date}
-                    </Box>
-                    <Box sx={{ fontWeight: "700", fontSize: "20px" }}>
-                      {job.title}
-                    </Box>
-                    <Box sx={{ color: "text.secondary", mb: "5px" }}>
-                      {job.location}
-                    </Box>
-                    <Box>
-                      {job.description}
-                    </Box>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small">Learn More</Button>
-                  </CardActions>
-                </Card>
-              )}
+          <div className="listing flex flex-col">
+            {menuOpen && <div className="filterOptions w-full flex flex-col justify-between md:flex-row h-40 pt-4 pb-4">
+              <div className="role w-full">
+                <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Role"
+                    className="w-full"
+                  >
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+              <div className="location w-full mt-2 md:ml-2 md:mt-0">
+                <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Location</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Location"
+                    className="w-full"
+                  >
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+            </div>}
+            <div className="joblist w-full">
+              {jobList.map((job:any) => 
+                  <Card variant="outlined" className="mt-4">
+                    <CardContent>
+                      <Box sx={{ color: "text.secondary", fontSize: "14px" }}>
+                        {job.date}
+                      </Box>
+                      <Box sx={{ fontWeight: "700", fontSize: "20px" }}>
+                        {job.title}
+                      </Box>
+                      <Box sx={{ color: "text.secondary", mb: "5px" }}>
+                        {job.location}
+                      </Box>
+                      <Box>
+                        {job.description}
+                      </Box>
+                    </CardContent>
+                    <CardActions>
+                      <Button size="small">Learn More</Button>
+                    </CardActions>
+                  </Card>
+                )}
+            </div>
           </div>
-          <Pagination count={10} onChange={handlePageChange}/>
+          <div className="pagination w-full flex justify-center">
+            <Pagination className="mt-2" count={10} onChange={handlePageChange}/>
+          </div>
         </div>
       </div>
     </div>

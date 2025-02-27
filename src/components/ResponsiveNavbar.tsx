@@ -138,14 +138,14 @@ export default function ResponsiveNavbar(props: Props) {
              {routes.map((item)=>{
                     return(
                       <Link href={item.id}>
-                          <Button onClick={()=>setSelection(item.id)} variant={selection===item.id?"outlined":"text"} key={item.id} sx={
+                          <Button onClick={()=>setSelection(item.id)} key={item.id} sx={
                             {
                               fontSize:'24px',
                               color:transparentBackground()?'#FFF':'#53565A',
                               borderColor:'#53565A',
                               borderRadius:'14px'
                               }}>
-                            {item.name}
+                            <span className={selection===item.id?"font-bold":"font-thin"}>{item.name}</span>
                           </Button>
                           </Link>
                     )
