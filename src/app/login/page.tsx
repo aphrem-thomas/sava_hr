@@ -1,25 +1,14 @@
+'use client'
 import { login } from "@/actions/login";
 import { Button, TextField,  } from "@mui/material";
+import { useFormState, useFormStatus } from 'react-dom'
 
 export default function Login() {
-
-  async function onSubmit(event: any) {
-    "use server";
-    console.log("in login func", event)
-    await login(event)
-    // const response = await fetch('/api/login', {
-    //   method: 'POST',
-    //   body: formData,
-    // })
- 
-    // Handle response if necessary
-    // const data = await response.json()
-    // ...
-  }
+  const [errorMessage, dispatch] = useFormState(login, undefined)
 
   return (
     <div className="flex flex-col items-center h-40 mt-40">
-      <form action={onSubmit}>
+      <form action={dispatch}>
         <TextField
                 sx={{marginTop:'10px'}}
                 className="w-full"
@@ -37,12 +26,30 @@ export default function Login() {
                 variant="standard"
                 name="password"
               />
-              <Button
-                className="mt-2 w-full"
-                variant="outlined"
-                type="submit"
-              >Login</Button>
+               <LoginButton/>
+              
       </form>
+      {/* {state?.errors?.username && <p>{state.errors.username}</p>} */}
     </div>
   );
 }
+
+function LoginButton() {
+  const { pending } = useFormStatus()
+ 
+  const handleClick = (event:any) => {
+    if (pending) {
+      event.preventDefault()
+    }
+  }
+  return (
+    <Button
+    disabled={pending}
+    className="mt-2 w-full"
+    variant="outlined"
+    type="submit"
+    onClick={handleClick}
+  >{pending?"Logging in":"Login"}</Button>
+  )
+}
+

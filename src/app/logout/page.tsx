@@ -1,25 +1,16 @@
-import { login } from "@/actions/login";
+'use client'
+import { logout } from "@/actions/logout";
 import { Button, TextField,  } from "@mui/material";
+import { useFormStatus, useFormState } from 'react-dom'
 
 export default function Login() {
 
-  async function onSubmit(event: any) {
-    "use server";
-    console.log("in login func", event)
-    await login(event)
-    // const response = await fetch('/api/login', {
-    //   method: 'POST',
-    //   body: formData,
-    // })
- 
-    // Handle response if necessary
-    // const data = await response.json()
-    // ...
-  }
+  
+    const [state, action, pending] = useFormState<any, any>(logout, undefined)
 
   return (
     <div className="flex flex-col items-center h-40 mt-40">
-      <form action={onSubmit}>
+      <form action={action}>
               <Button
                 className="mt-2 w-full"
                 variant="outlined"

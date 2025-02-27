@@ -1,4 +1,4 @@
-import 'server-only'
+'use server'
 import { cookies } from 'next/headers'
 import { SignJWT, jwtVerify } from 'jose'
 
@@ -33,7 +33,11 @@ export async function createSession(userId: string) {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
-    sameSite: 'lax',
     path: '/',
   })
 }
+
+export async function deleteSession() {
+    const cookieStore = await cookies()
+    cookieStore.delete('session')
+  }
