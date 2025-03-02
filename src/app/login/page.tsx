@@ -3,12 +3,17 @@ import { login } from "@/actions/login";
 import { Button, TextField,  } from "@mui/material";
 import { useFormState, useFormStatus } from 'react-dom'
 
+function loginn(formData:any){
+  fetch("api/login",{
+    method:'POST',
+    body:formData
+}).then(resp=>resp.json().then(data=>window.location.replace('/logout')))
+}
 export default function Login() {
-  const [errorMessage, dispatch] = useFormState(login, undefined)
 
   return (
     <div className="flex flex-col items-center h-40 mt-40">
-      <form action={dispatch}>
+      <form action={loginn}>
         <TextField
                 sx={{marginTop:'10px'}}
                 className="w-full"

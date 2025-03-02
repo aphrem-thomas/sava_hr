@@ -6,11 +6,15 @@ import { useFormStatus, useFormState } from 'react-dom'
 export default function Login() {
 
   
-    const [state, action, pending] = useFormState<any, any>(logout, undefined)
+  async function logout(){
+    fetch("api/logout",{
+      method:'POST',
+  }).then(resp=>resp.json().then(()=>window.location.replace('/login')))
+  }
 
   return (
     <div className="flex flex-col items-center h-40 mt-40">
-      <form action={action}>
+      <form action={logout}>
               <Button
                 className="mt-2 w-full"
                 variant="outlined"
