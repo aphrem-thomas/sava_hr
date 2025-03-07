@@ -64,7 +64,7 @@ export default function Home() {
         <div className="hidden md:flex flex-col items-center">
           <div className="punchlineWrapper container">
             <div className="punchline text-xl text-white md:text-lg">Human resource</div>
-            <div className="punchlineDescription text-white w-[600px] md:text-4xl">Empowering People, Elevating Businesses — Your Trusted Partner in HR Excellence.</div>
+            <div className="punchlineDescription text-white w-[600px] md:text-4xl">{punchlineText}</div>
           </div>
         </div>
         <div className="md:hidden [clip-path:ellipse(72%_51%_at_50%_33%)] homebg-mobile w-full h-64 bg-cover bg-[url('/images/sava-hr-cover.jpg')]"></div>
@@ -124,29 +124,29 @@ export default function Home() {
             </div>
       </div>
 
-      <div className="dummy bg-white w-full flex justify-center">
+      <div className="dummy bg-white w-full p-4 flex justify-center mt-10">
           <div className="features flex flex-col items-center md:flex-row md:justify-around md:container">
-            <div className="f1 flex-col flex w-80 items-center mt-10">
+            <div className="f1 flex-col flex w-full items-center mt-10">
               <SchoolIcon className="text-theme !text-[40px]"/>
-              <div className="header mt-2 mb-2 text-2xl text-darkthemefont">Some heading</div>
-              <div className="description text-justify text-[16px] 2xl:text-[20px] font-medium">
-                {"Provide your people and managers with leadership tools that see the whole employee — at any stage in their lifecycle — to deliver personalized support, foster belonging, and enable high performance."}
+              <div className="header text-center mt-8 mb-6 text-2xl text-darkthemefont">Industry expertise in IT & government recruitment</div>
+              <div className="description text-primaryfont w-full text-center text-[16px] 2xl:text-[20px] font-medium">
+                {"With deep expertise in IT and government recruitment, we connect top talent with organizations, ensuring precise matches for specialized roles in both public and private sector environments."}
               </div>
             </div>
 
-            <div className="f1 flex-col flex w-80 items-center mt-10">
+            <div className="f1 flex-col flex w-full items-center mt-10">
               <DevicesIcon className="text-theme !text-[40px]"/>
-              <div className="header mt-2 mb-2 text-2xl text-darkthemefont">Some heading</div>
-              <div className="description justify text-[16px] 2xl:text-[20px] font-medium">
-                {"Provide your people and managers with leadership tools that see the whole employee — at any stage in their lifecycle — to deliver personalized support, foster belonging, and enable high performance."}
+              <div className="header text-center mt-8 mb-6 text-2xl text-darkthemefont">Tailored hiring solutions for employers & job seekers</div>
+              <div className="description text-primaryfont text-center text-[16px] 2xl:text-[20px] font-medium">
+                {"Our customized hiring solutions support both employers and job seekers, ensuring businesses find top talent while professionals secure opportunities that match their skills, ambitions, and career paths."}
               </div>
             </div>
 
-            <div className="f1 flex-col flex w-80 items-center mt-10">
+            <div className="f1 flex-col w-full flex items-center mt-10">
               <VpnLockIcon className="text-theme !text-[40px]"/>
-              <div className="header mt-2 mb-2 text-2xl text-darkthemefont">Some heading</div>
-              <div className="description text-justify text-[16px] 2xl:text-[20px] font-medium">
-                {"Provide your people and managers with leadership tools that see the whole employee — at any stage in their lifecycle — to deliver personalized support, foster belonging, and enable high performance."}
+              <div className="header text-center mt-8 mb-6 text-2xl text-darkthemefont">Efficient, reliable, and result-driven approach</div>
+              <div className="description text-primaryfont text-center text-[16px] 2xl:text-[20px] font-medium">
+                {"We deliver staffing and HR solutions with efficiency, consistency, and a focus on measurable results, ensuring every hire and HR process supports your business goals and long-term success."}
               </div>
             </div>
           </div>
