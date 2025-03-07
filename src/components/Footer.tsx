@@ -16,7 +16,7 @@ export default function Footer() {
            <div className="content md:container text-white">
              <div className="logo text-3xl md:text-5xl md:mt-20">
               <div>SavaHR</div>
-              <div className="tagline text-base md:text-xl">Elivating Business</div>
+              <div className="tagline text-base md:text-xl">Employers best partner and Employees best friend.</div>
               </div>
            </div>
            <div className="links flex justify-center md:mt-20 2xl:w-1/2">
