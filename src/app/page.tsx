@@ -10,6 +10,8 @@ const punchlineText = "HR is the bridge between people, management, and leadersh
                 your organization. Ensure you have the right technology,\
                 partnership, and culture strategies in one place to positively\
                 impact employees and business goals." 
+
+const empoweringText = "Empowering People, Elevating Businesses — Your Trusted Partner in HR Excellence.";
 const newJob = () => (
   <>
            <div className="image md:w-1/2 2xl:w-1/3">
@@ -60,11 +62,11 @@ export default function Home() {
   return (
     <div className="home w-full">
       <div className="homebg hidden md:block w-full md:h-full h-1/4 left-0 top-0 fixed bg-cover -z-10 bg-[url('/images/sava-hr-cover.jpg')]"></div>
-      <div className="bg-cover h-full md:h-screen md:bg-transparent flex-col md:content-end">
+      <div className="bg-cover h-full md:h-screend md:bg-transparent flex-col md:content-end">
         <div className="hidden md:flex flex-col items-center">
           <div className="punchlineWrapper container">
             <div className="punchline text-xl text-white md:text-lg">Human resource</div>
-            <div className="punchlineDescription text-white w-[600px] md:text-4xl">{punchlineText}</div>
+            <div className="punchlineDescription text-white w-[600px] md:text-4xl">{empoweringText}</div>
           </div>
         </div>
         <div className="md:hidden [clip-path:ellipse(72%_51%_at_50%_33%)] homebg-mobile w-full h-64 bg-cover bg-[url('/images/sava-hr-cover.jpg')]"></div>
@@ -103,7 +105,7 @@ export default function Home() {
                 {punchlineText}
               </div> */}
               <div className="mobile-punchline-heading md:hidden">Human Resource</div>
-              <div className="md:hidden text-center text-primaryfont leading-[45px] mt-6 text-4xl">Empowering People, Elevating Businesses — Your Trusted Partner in HR Excellence.</div>
+              <div className="md:hidden text-center text-primaryfont leading-[45px] mt-6 text-4xl">{empoweringText}</div>
             </div>
           </div>
         </div>
@@ -124,7 +126,7 @@ export default function Home() {
             </div>
       </div>
 
-      <div className="dummy bg-white w-full p-4 flex justify-center mt-10">
+      <div className="dummy bg-white w-full p-4 flex justify-center mt-10 md:mt-0">
           <div className="features flex flex-col items-center md:flex-row md:justify-around md:container">
             <div className="f1 flex-col flex w-full items-center mt-10">
               <SchoolIcon className="text-theme !text-[40px]"/>
@@ -134,7 +136,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="f1 flex-col flex w-full items-center mt-10">
+            <div className="f1 flex-col flex w-full items-center mt-24">
               <DevicesIcon className="text-theme !text-[40px]"/>
               <div className="header text-center mt-8 mb-6 text-2xl text-darkthemefont">Tailored hiring solutions for employers & job seekers</div>
               <div className="description text-primaryfont text-center text-[16px] 2xl:text-[20px] font-medium">
@@ -142,7 +144,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="f1 flex-col w-full flex items-center mt-10">
+            <div className="f1 flex-col w-full flex items-center mt-24">
               <VpnLockIcon className="text-theme !text-[40px]"/>
               <div className="header text-center mt-8 mb-6 text-2xl text-darkthemefont">Efficient, reliable, and result-driven approach</div>
               <div className="description text-primaryfont text-center text-[16px] 2xl:text-[20px] font-medium">
