@@ -35,6 +35,7 @@ export default function Contact() {
   const [type, setType] = useState<any>("success");
   const [alert, showAlert] = useState(false);
   const [message, setMessage] = useState("");
+  const [experience, setExperience] = useState("");
 
   const inputFile:any = useRef(null);
 
@@ -57,6 +58,7 @@ export default function Contact() {
       setResume("");
       setTitle("");
       setStatus("");
+      setExperience("");
   }
 
 
@@ -87,6 +89,7 @@ export default function Contact() {
     formData.append("resume", resume);
     formData.append("title", title);
     formData.append("status", status);
+    formData.append("experience", experience)
     let resp = await fetch("api/contact", {
       method: "POST",
       body: formData,
@@ -144,6 +147,8 @@ export default function Contact() {
             </div>
             <TextField value={email} sx={{marginTop:'10px'}} id="standard-basic" label="Email" variant="standard"
             onChange={(e)=>setEmail(e.target.value)} />
+             <TextField value={experience} sx={{marginTop:'10px'}} id="standard-basic" label="Years of Experience" variant="standard"
+            onChange={(e)=>setExperience(e.target.value)} />
             <TextField
               sx={{marginTop:'10px'}}
               id="standard-basic"
