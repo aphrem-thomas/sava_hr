@@ -6,180 +6,153 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
+import { useRouter } from 'next/navigation';
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
-import { Divider, FormControl, InputBase, InputLabel, MenuItem, Pagination, Paper, Select } from "@mui/material";
+import { Divider, FormControl, InputBase, InputLabel, MenuItem, Modal, Pagination, Paper, Select } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import DirectionsIcon from "@mui/icons-material/Directions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ContactForm from "@/components/contactForm";
+import DeleteIcon from '@mui/icons-material/Delete';
 
-let jobs = [
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-1",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-2",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-3",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-4",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-5",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-6",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-7",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-8",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-9",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-10",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-11",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-12",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-13",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-14",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-15",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-16",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-17",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-18",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-19",
-    company:"Accenture"
-  },
-  {
-    date: "10-Jan-2025",
-    location: "Ottawa",
-    description: "kadjfaldkfja;ldkfja;ldfkja lfjaldsfjdalfjdaklfjkjdslk ",
-    title: "Software developer-20",
-    company:"Accenture"
-  },
-
-];
 
 export default function Jobs() {
   const [page, setPage] = useState(1)
-  const [jobList, setJoblist] = useState<any>([...jobs.slice((page-1)*10, page*10)])
+  const [jobs,setJobs] = useState([])
+  const [jobList, setJoblist] = useState<any>([])
   const [menuOpen, setMenuOpen] = useState(false)
+  const [selectedJob, setSelectedJob] = useState('')
+  const [jobDetails, setJobDetails] = useState<any>({})
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
+  const [detailsOpenId, setDetailsOpenId] = useState<string>("")
+  const router = useRouter();
+  // To access cookies on the client side
+  // Example: get a cookie value by name
+  const getCookie = (name: string) => {
+    if (typeof document === "undefined") return null;
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(";").shift() || null;
+    return null;
+  };
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+  };
+
+  const getJobs = () => {
+    fetch('/api/jobs',{
+    method:'GET',
+    }).then((res)=> res.json().then((data)=>{
+      const jobs = JSON.parse(data)
+      setJobs(jobs)
+      setJoblist(jobs.slice(0, 9))
+      setSelectedJob(jobs[0].id)
+      fetch(`/api/job/${jobs[0].id}`,{method:'GET'}).then((resp)=>{
+        resp.json().then((data)=>{
+          setJobDetails(JSON.parse(data))
+        })
+      })
+    }));
+  }
+
+  useEffect(()=>{
+    getJobs();
+  }
+,[])
+
+
+  const getJobDetails = (id:any)=>{
+    fetch(`/api/job/${id}`,{
+      method:'GET',
+    }).then((resp)=>{
+      resp.json().then((data)=>{
+        setJobDetails(JSON.parse(data))
+      })
+    })
+  }
+
+  const deleteJob = (id:any)=>{
+    fetch(`/api/job/${id}`,{
+      method:'DELETE',
+       headers:{
+        'X-CSRF-TOKEN':document.cookie.split('=')[1]
+      }
+    }).then((resp)=>{
+      resp.json().then((data)=>{
+        getJobs();
+      })
+    })
+  }
   
   const handlePageChange=(e:any, value:any)=>{
     setPage(value)
     if (jobs.length){
-      setJoblist([...jobs.slice((value-1)*10, value*10)])
+      setJoblist([...jobs.slice((value-1)*10, (value*10)-1)])
     }
   }
+
+  const onSearchChange = (e:any) => {
+    const searchTerm = e.target.value.toLowerCase();
+    if (searchTerm === "") {
+      setJoblist(jobs.slice(0, 9));
+    } else {
+      const filteredJobs = jobs.filter((job:any) =>
+        job.title.toLowerCase().includes(searchTerm)
+      );
+      setJoblist(filteredJobs);
+      
+    }
+  };
+
+  const detailsSection = () => {
+    return (
+      <>
+        <div className="applyButton">
+          <Button onClick={() => setModalOpen(true)} variant="contained">
+            Apply
+          </Button>
+        </div>
+        <div className="aboutSection">
+          <div className="aboutHeader text-xl text-black mt-6">
+            About the job
+          </div>
+          <div className="aboutContent mt-2" dangerouslySetInnerHTML={{ __html:jobDetails.description}}></div>
+        </div>
+        <div className="requirementsSection">
+          <div className="reqHeader text-xl text-black mt-6">Requirements</div>
+          <div className="reqs ml-4 mt-2">
+            <ul className="list-disc">
+              {jobDetails.requirements.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </>
+    );
+  };
   return (
-    <div className="flex justify-center w-full mt-20 text-primaryfont ">
-      <div className="container p-10">
+    <div className="flex justify-center w-full mt-20 text-primaryfont md:pl-[200px] md:pr-[200px]">
+      <div className="container p-10 ">
         <div className="header">
           <div className="headerText text-4xl">Find your dream job</div>
           <div className="headertext text-lg mt-4">
             Search vast list of jobs in Canada
           </div>
-          <div className="addjobbutton">
-            <Button variant="text">Add Job</Button>
-          </div>
+          {getCookie('csrf_access_token') && (
+            <div className="addjobbutton">
+              <Button onClick={() => router.push('/addjob')} variant="text">Add Job</Button>
+            </div>
+          )}
         </div>
         <div className="jobs flex flex-col">
           <div className="filter w-full mt-8">
@@ -198,6 +171,7 @@ export default function Jobs() {
               <InputBase
                 sx={{ ml: 1, flex: 1 }}
                 placeholder="Search jobs"
+                onChange={onSearchChange}
                 inputProps={{ "aria-label": "search jobs" }}
               />
               <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
@@ -238,28 +212,68 @@ export default function Jobs() {
                 </FormControl>
               </div>
             </div>}
-            <div className="joblist w-full">
-              {jobList.map((job:any) => 
-                  <Card variant="outlined" className="mt-4">
-                    <CardContent>
-                      <Box sx={{ color: "text.secondary", fontSize: "14px" }}>
-                        {job.date}
-                      </Box>
-                      <Box sx={{ fontWeight: "700", fontSize: "20px" }}>
-                        {job.title}
-                      </Box>
-                      <Box sx={{ color: "text.secondary", mb: "5px" }}>
-                        {job.location}
-                      </Box>
-                      <Box>
-                        {job.description}
-                      </Box>
-                    </CardContent>
-                    <CardActions>
-                      <Button size="small">Learn More</Button>
-                    </CardActions>
-                  </Card>
-                )}
+            <div className="jobsSection flex">
+              <div className="joblist w-96 h-screen overflow-auto">
+                {jobList.length?jobList.map((job:any) => 
+                    <Card 
+                      id={job.id}
+                      variant="outlined"
+                      className="mt-4"
+                      onClick={()=>{
+                        setSelectedJob(job.id)
+                        getJobDetails(job.id)
+                      }}
+                      data-active={selectedJob === job.id ? '' : undefined}
+                      sx={{
+                        cursor: 'pointer',
+                        '&[data-active]': {
+                          backgroundColor: 'action.selected',
+                          '&:hover': {
+                            backgroundColor: 'action.selectedHover',
+                          },
+                        },
+                      }}
+                      >
+                      <CardContent>
+                        <Box sx={{ color: "text.secondary", fontSize: "14px" }}>
+                          {job.date}
+                          {getCookie('csrf_access_token') && <IconButton type="button" sx={{ p: "10px" }} aria-label="search" onClick={(e)=>{
+                            e.stopPropagation();
+                            deleteJob(job.id);
+                          }}>
+                            <DeleteIcon />
+                          </IconButton>}
+                        </Box>
+                        <Box sx={{ fontWeight: "700", fontSize: "20px" }}>
+                          {job.title}
+                        </Box>
+                        <Box sx={{ color: "text.secondary", mb: "5px" }}>
+                          {job.company}
+                        </Box>
+                        <Box sx={{ color: "text.secondary", mb: "5px" }}>
+                          {job.location}
+                        </Box>
+                        <Box>
+                          {job.description}
+                        </Box>
+                        <Box className="md:hidden" sx={{ fontSize: "16px", color:"#1976d2" }} onClick={()=>{setDetailsOpenId(job.id)}}>
+                          more
+                        </Box>
+                        {detailsOpenId === job.id && <Box>
+                        {detailsSection()}
+                        </Box>}
+                      </CardContent>
+                    </Card>
+                  ):<div>No listing found</div>}
+              </div>
+              <div className="jobDetails w-full h-screen mt-4 ml-4 hidden md:block">
+                  {!!Object.keys(jobDetails).length && <div className="jobdetailsSection border-[1px] border-solid h-full p-4">
+                    <div className="companyName">{jobDetails.company}</div>
+                    <div className="role text-black text-4xl">{jobDetails.role}</div>
+                    <div className="location text-xl mt-2">{jobDetails.location}</div>
+                    {detailsSection()}
+                  </div>}
+              </div>
             </div>
           </div>
           <div className="pagination w-full flex justify-center">
@@ -267,6 +281,16 @@ export default function Jobs() {
           </div>
         </div>
       </div>
+      <Modal
+        open={modalOpen}
+        onClose={()=>setModalOpen(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <ContactForm jobId={selectedJob}/>
+        </Box>
+      </Modal>
     </div>
   );
 }

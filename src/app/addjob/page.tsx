@@ -3,33 +3,36 @@
 import { login } from "@/actions/login";
 import { Button, TextareaAutosize, TextField,  } from "@mui/material";
 import { useFormStatus } from "react-dom";
+import {Editor, EditorState} from 'draft-js';
+import 'draft-js/dist/Draft.css';
+import {stateToHTML} from 'draft-js-export-html';
+
+import React, { useState } from "react";
 
 export default function Login() {
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
 
-  // async function addJob(event: any) {
-  //   "use server";
-  //   console.log("in login func", event)
-  //   await login(event)
-  //   // const response = await fetch('/api/login', {
-  //   //   method: 'POST',
-  //   //   body: formData,
-  //   // })
- 
-  //   // Handle response if necessary
-  //   // const data = await response.json()
-  //   // ...
-  // }
+  const [description, setDescription] = useState("");
 
   function addjob(formData:any){
+    const today = new Date()
+    console.log("current cookies", document.cookie.split('=')[1])
+    formData.append('date', today)
+    formData.append('description', description);
     fetch("/api/jobs",{
       method:'POST',
-      body:formData
+      body:formData,
+      headers:{
+        'X-CSRF-TOKEN':document.cookie.split('=')[1]
+      }
   }).then(resp=>resp.json().then())
   }
 
   return (
     <div className="flex flex-col items-center h-40 mt-40">
-      <div className="flex flex-col items-center h-40 mt-40">
+      <div className="flex flex-col items-center mt-40 p-8">
             <form action={addjob}>
                     <TextField
                       sx={{marginTop:'10px'}}
@@ -55,13 +58,32 @@ export default function Login() {
                       variant="standard"
                       name="location"
                     />
-                    
-                    <TextareaAutosize
-                      aria-label="description"
-                      minRows={10}
-                      name="description"
-                      placeholder="Description"
-                      style={{ marginTop:'10px', width: '100%' , border:'1px solid black', padding:'4px', borderRadius:'4px'}}
+                    <TextField
+                      sx={{marginTop:'10px'}}
+                      className="w-full"
+                      id="company"
+                      label="Company"
+                      variant="standard"
+                      name="company"
+                    />
+                    <div className="descHeader mt-10">Description</div>
+                    <div className="descriptionSection mt-2 h-48 border-[1px] border-[#000] border-solid">
+                      <Editor
+                      editorState={editorState}
+                      onChange={(e)=>{
+                        setDescription(stateToHTML(e.getCurrentContent()));
+                        setEditorState(e)
+                      }}
+                    />
+                    </div>
+
+                    <TextField
+                      sx={{marginTop:'10px'}}
+                      className="w-full"
+                      id="requirements"
+                      label="Requirements (comma separated, use colon for separating set of requirements)"
+                      variant="standard"
+                      name="requirements"
                     />
                      <LoginButton/>
                     

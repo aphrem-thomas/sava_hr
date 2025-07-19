@@ -7,8 +7,11 @@ export default function Login() {
 
   
   async function logout(){
-    fetch("api/logout",{
+    fetch("/api/logout",{
       method:'POST',
+      headers:{
+        'X-CSRF-TOKEN':document.cookie.split('=')[1]
+      }
   }).then(resp=>resp.json().then(()=>window.location.replace('/login')))
   }
 
