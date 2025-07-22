@@ -15,6 +15,7 @@ export default function Login() {
   );
 
   const [description, setDescription] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
 
   function addjob(formData:any){
     const today = new Date()
@@ -27,7 +28,18 @@ export default function Login() {
       headers:{
         'X-CSRF-TOKEN':document.cookie.split('=')[1]
       }
-  }).then(resp=>resp.json().then())
+  }).then(resp=>{
+      if(resp.ok){
+        setShowSuccess(true);
+        setTimeout(()=>{
+          window.location.replace('/jobs')
+        },2000)
+      }else{
+        resp.json().then((data)=>{
+          console.log("error", data)
+        })
+      }
+  })
   }
 
   return (
@@ -88,8 +100,9 @@ export default function Login() {
                      <LoginButton/>
                     
             </form>
-            {/* {state?.errors?.username && <p>{state.errors.username}</p>} */}
           </div>
+
+      {showSuccess && <div className="text-green-500 mt-4">Job added successfully!</div>}
     </div>
   );
 }

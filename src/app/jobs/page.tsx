@@ -141,7 +141,7 @@ export default function Jobs() {
     );
   };
   return (
-    <div className="flex justify-center w-full mt-20 text-primaryfont md:pl-[200px] md:pr-[200px]">
+    <div className="flex justify-center w-full mt-20 text-primaryfont xl:pl-[200px] xl:pr-[200px]">
       <div className="container p-10 ">
         <div className="header">
           <div className="headerText text-4xl">Find your dream job</div>
@@ -179,7 +179,7 @@ export default function Jobs() {
               </IconButton>
             </Paper>
           </div>
-          <div className="listing flex flex-col">
+          <div className="listing flex flex-col mt-6">
             {menuOpen && <div className="filterOptions w-full flex flex-col justify-between md:flex-row h-40 pt-4 pb-4">
               <div className="role w-full">
                 <FormControl fullWidth>
@@ -213,7 +213,7 @@ export default function Jobs() {
               </div>
             </div>}
             <div className="jobsSection flex">
-              <div className="joblist w-96 h-screen overflow-auto">
+              <div className="joblist h-screen overflow-auto">
                 {jobList.length?jobList.map((job:any) => 
                     <Card 
                       id={job.id}
@@ -266,8 +266,8 @@ export default function Jobs() {
                     </Card>
                   ):<div>No listing found</div>}
               </div>
-              <div className="jobDetails w-full h-screen mt-4 ml-4 hidden md:block">
-                  {!!Object.keys(jobDetails).length && <div className="jobdetailsSection border-[1px] border-solid h-full p-4">
+              <div className="jobDetails w-full h-screen mt-4 ml-10 hidden md:block">
+                  {!!Object.keys(jobDetails).length && <div className="jobdetailsSection border-[1px] border-solid h-full p-16">
                     <div className="companyName">{jobDetails.company}</div>
                     <div className="role text-black text-4xl">{jobDetails.role}</div>
                     <div className="location text-xl mt-2">{jobDetails.location}</div>
