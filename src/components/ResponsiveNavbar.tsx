@@ -121,7 +121,7 @@ export default function ResponsiveNavbar(props: Props) {
         }}
         className={`w-full flex justify-center items-center fixed z-10 !h-16  md:h-28`}
       >
-        <div className="container">
+        <div className="max-w-[1129px] w-full">
         <Toolbar sx={{width:'100%'}}>
           <IconButton
             color="inherit"

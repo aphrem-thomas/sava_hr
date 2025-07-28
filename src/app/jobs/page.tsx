@@ -12,7 +12,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Divider, FormControl, InputBase, InputLabel, MenuItem, Modal, Pagination, Paper, Select } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import DirectionsIcon from "@mui/icons-material/Directions";
+import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import { useEffect, useState } from "react";
 import ContactForm from "@/components/contactForm";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -26,6 +26,12 @@ export default function Jobs() {
   const [selectedJob, setSelectedJob] = useState('')
   const [jobDetails, setJobDetails] = useState<any>({})
   const [modalOpen, setModalOpen] = useState<boolean>(false)
+  const [roles, setRoles] = useState<any>([])
+  const [jobCount, setJobCount] = useState(0)
+  const [searchText, setSearchText] = useState<string>('');
+  const [selectedRole, setSelectedRole] = useState<string>('')
+  const [selectedLocation, setSelectedLocation] = useState<string>('')
+  const [locations, setLocations] = useState<any>([])
   const [detailsOpenId, setDetailsOpenId] = useState<string>("")
   const router = useRouter();
   // To access cookies on the client side
@@ -54,8 +60,9 @@ export default function Jobs() {
     }).then((res)=> res.json().then((data)=>{
       const jobs = JSON.parse(data)
       setJobs(jobs)
-      setJoblist(jobs.slice(0, 9))
-      setSelectedJob(jobs[0].id)
+      setRoles([...new Set(jobs.map((job:any) => job.role))])
+      setLocations([...new Set(jobs.map((job:any) => job.location))])
+      setJobsListAndCount(jobs);
       fetch(`/api/job/${jobs[0].id}`,{method:'GET'}).then((resp)=>{
         resp.json().then((data)=>{
           setJobDetails(JSON.parse(data))
@@ -68,6 +75,15 @@ export default function Jobs() {
     getJobs();
   }
 ,[])
+
+
+  const setJobsListAndCount = (jobs:any) => {
+    setJoblist(jobs.slice((page-1)*10, (page*10)-1));
+    setJobCount(jobs.length);
+    if (jobs.length > 0) {
+      setSelectedJob(jobs[page > 1 ? (page-1)*10 : 0].id);
+    }
+  };
 
 
   const getJobDetails = (id:any)=>{
@@ -95,32 +111,38 @@ export default function Jobs() {
   
   const handlePageChange=(e:any, value:any)=>{
     setPage(value)
-    if (jobs.length){
-      setJoblist([...jobs.slice((value-1)*10, (value*10)-1)])
+   if (selectedLocation || selectedRole) {
+      const filteredJobs = jobs.filter((job:any) =>
+        job.location.toLowerCase() === selectedLocation.toLowerCase() || job.role.toLowerCase() === selectedRole.toLowerCase()
+      );
+      setJobsListAndCount(filteredJobs);
     }
   }
 
   const onSearchChange = (e:any) => {
     const searchTerm = e.target.value.toLowerCase();
-    if (searchTerm === "") {
-      setJoblist(jobs.slice(0, 9));
-    } else {
+    setSearchText(searchTerm);
+    if (searchTerm === "" && !selectedLocation && !selectedRole) {
+      setJobsListAndCount(jobs);
+    } 
+    else if (selectedLocation || selectedRole) {
       const filteredJobs = jobs.filter((job:any) =>
-        job.title.toLowerCase().includes(searchTerm)
+        (job.title.toLowerCase().includes(searchTerm) || job.company.toLowerCase().includes(searchTerm) || job.location.toLowerCase().includes(searchTerm)) &&
+        (job.location.toLowerCase() === selectedLocation.toLowerCase() || job.role.toLowerCase() === selectedRole.toLowerCase())
       );
-      setJoblist(filteredJobs);
-      
+      setJobsListAndCount(filteredJobs);
+    }
+    else {
+      const filteredJobs = jobs.filter((job:any) =>
+        (job.title.toLowerCase().includes(searchTerm) || job.company.toLowerCase().includes(searchTerm) || job.location.toLowerCase().includes(searchTerm))
+      );
+      setJobsListAndCount(filteredJobs);
     }
   };
 
   const detailsSection = () => {
     return (
       <>
-        <div className="applyButton">
-          <Button onClick={() => setModalOpen(true)} variant="contained">
-            Apply
-          </Button>
-        </div>
         <div className="aboutSection">
           <div className="aboutHeader text-xl text-black mt-6">
             About the job
@@ -137,13 +159,18 @@ export default function Jobs() {
             </ul>
           </div>
         </div>
+        <div className="applyButton mt-8">
+          <Button onClick={() => setModalOpen(true)} variant="contained">
+            Apply
+          </Button>
+        </div>
       </>
     );
   };
   return (
-    <div className="flex justify-center w-full mt-20 text-primaryfont xl:pl-[200px] xl:pr-[200px]">
-      <div className="container p-10 ">
-        <div className="header">
+    <div className="flex justify-center w-full text-primaryfont bg-[#f4f2ee]">
+      <div className="md:max-w-[1129px] w-full mt-20">
+        <div className="header w-full">
           <div className="headerText text-4xl">Find your dream job</div>
           <div className="headertext text-lg mt-4">
             Search vast list of jobs in Canada
@@ -165,13 +192,22 @@ export default function Jobs() {
                 width: "100%",
               }}
             >
-              <IconButton onClick={()=>setMenuOpen(!menuOpen)} sx={{ p: "10px" }} aria-label="menu">
+              <IconButton onClick={()=>{
+                if (menuOpen) {
+                  setSelectedRole('');
+                  setSelectedLocation('');
+                  setJobsListAndCount(jobs);
+                  setSearchText('');
+                }
+                setMenuOpen(!menuOpen)
+                }} sx={{ p: "10px" }} aria-label="menu">
                 <MenuIcon />
               </IconButton>
               <InputBase
                 sx={{ ml: 1, flex: 1 }}
                 placeholder="Search jobs"
                 onChange={onSearchChange}
+                value={searchText}
                 inputProps={{ "aria-label": "search jobs" }}
               />
               <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
@@ -188,11 +224,25 @@ export default function Jobs() {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     label="Role"
-                    className="w-full"
+                    className="w-full bg-white"
+                    onChange={(e) => {
+                      const selectedRole = e.target.value as string;
+                      setSelectedRole(selectedRole);
+                      if (selectedRole === "") {
+                        setJobsListAndCount(jobs);
+                      } else {
+                        const filteredJobs = jobs.filter((job:any) =>
+                          job.role.toLowerCase() === selectedRole.toLowerCase()
+                        );
+                        setJobsListAndCount(filteredJobs);
+                      }
+                    }
+                    }
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem value="">All Roles</MenuItem>
+                    {roles.map((role:any, index:number) => (
+                      <MenuItem key={index} value={role}>{role}</MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </div>
@@ -203,17 +253,30 @@ export default function Jobs() {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     label="Location"
-                    className="w-full"
+                    className="w-full bg-white"
+                    onChange={(e) => {
+                      const selectedLocation = e.target.value as string;
+                      setSelectedLocation(selectedLocation);
+                      if (selectedLocation === "") {
+                        setJobsListAndCount(jobs);
+                      } else {
+                        const filteredJobs = jobs.filter((job:any) =>
+                          job.location.toLowerCase() === selectedLocation.toLowerCase()
+                        );
+                        setJobsListAndCount(filteredJobs);
+                      }
+                    }}
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem value="">All Locations</MenuItem>
+                    {locations.map((location:any, index:number) => (
+                      <MenuItem key={index} value={location}>{location}</MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </div>
             </div>}
             <div className="jobsSection flex">
-              <div className="joblist h-screen overflow-auto">
+              <div className="joblist h-screen overflow-auto w-full p-2 md:w-[500px]">
                 {jobList.length?jobList.map((job:any) => 
                     <Card 
                       id={job.id}
@@ -225,6 +288,7 @@ export default function Jobs() {
                       }}
                       data-active={selectedJob === job.id ? '' : undefined}
                       sx={{
+                        padding:'2',
                         cursor: 'pointer',
                         '&[data-active]': {
                           backgroundColor: 'action.selected',
@@ -236,28 +300,36 @@ export default function Jobs() {
                       >
                       <CardContent>
                         <Box sx={{ color: "text.secondary", fontSize: "14px" }}>
-                          {job.date}
-                          {getCookie('csrf_access_token') && <IconButton type="button" sx={{ p: "10px" }} aria-label="search" onClick={(e)=>{
+                          <Box sx={{  fontSize: "18px" , color: "#1976d2"}}>
+                            {job.title}
+                            {getCookie('csrf_access_token') && <IconButton type="button" sx={{ p: "10px" }} aria-label="search" onClick={(e)=>{
                             e.stopPropagation();
                             deleteJob(job.id);
                           }}>
                             <DeleteIcon />
                           </IconButton>}
+                          </Box>
                         </Box>
-                        <Box sx={{ fontWeight: "700", fontSize: "20px" }}>
-                          {job.title}
-                        </Box>
-                        <Box sx={{ color: "text.secondary", mb: "5px" }}>
+                        
+                        <Box sx={{ fontWeight:"700", color: "text.secondary", mb: "2px" }}>
                           {job.company}
                         </Box>
-                        <Box sx={{ color: "text.secondary", mb: "5px" }}>
-                          {job.location}
+                        <Box sx={{ color: "text.secondary", mb: "2px" }}>
+                          {job.location}<FmdGoodIcon sx={{marginLeft:'4px'}} fontSize='small'/>
+                        </Box>
+                        <Box sx={{ color: "text.secondary", fontSize : "12px", mb: "8px"}}>
+                          {new Date(job.date).toLocaleDateString()}
                         </Box>
                         <Box>
                           {job.description}
                         </Box>
-                        <Box className="md:hidden" sx={{ fontSize: "16px", color:"#1976d2" }} onClick={()=>{setDetailsOpenId(job.id)}}>
-                          more
+                        <Box className="md:hidden" sx={{ fontSize: "16px", color:"#1976d2", mb: "8px"}} onClick={()=>{
+                          if (detailsOpenId === job.id) {
+                            setDetailsOpenId("");
+                          } else {
+                            setDetailsOpenId(job.id);
+                          }}}>
+                          {detailsOpenId === job.id ? 'Hide Details' : 'Show Details'}
                         </Box>
                         {detailsOpenId === job.id && <Box>
                         {detailsSection()}
@@ -266,8 +338,8 @@ export default function Jobs() {
                     </Card>
                   ):<div>No listing found</div>}
               </div>
-              <div className="jobDetails w-full h-screen mt-4 ml-10 hidden md:block">
-                  {!!Object.keys(jobDetails).length && <div className="jobdetailsSection border-[1px] border-solid h-full p-16">
+              <div className="jobDetails w-full mt-4 ml-10 hidden md:block border-[1px] bg-white min-h-[600px] h-full">
+                  {!!Object.keys(jobDetails).length && <div className="jobdetailsSection border-solid p-16">
                     <div className="companyName">{jobDetails.company}</div>
                     <div className="role text-black text-4xl">{jobDetails.role}</div>
                     <div className="location text-xl mt-2">{jobDetails.location}</div>

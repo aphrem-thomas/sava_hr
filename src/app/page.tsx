@@ -47,7 +47,7 @@ export default function Home() {
       <div className="homebg hidden md:block w-full md:h-full h-1/4 left-0 top-0 fixed bg-cover -z-10 bg-[url('/images/sava-hr-cover.jpg')]"></div>
       <div className="bg-cover h-full md:h-screen md:bg-transparent flex-col md:content-end">
         <div className="hidden md:flex flex-col items-center">
-          <div className="punchlineWrapper container">
+          <div className="punchlineWrapper max-w-[1129px]  w-full">
             <div className="punchline text-xl text-white md:text-lg">Human resource</div>
             <div className="punchlineDescription text-white w-[600px] md:text-4xl">{empoweringText}</div>
           </div>
@@ -61,7 +61,7 @@ export default function Home() {
             ></path>
           </svg>
           <div className="content bg-white flex h-[35vh] justify-center">
-            <div className="hidden container p-12 md:flex flex-col md:flex-row justify-between relative">
+            <div className="hidden max-w-[1129px]  w-full p-12 md:flex flex-col md:flex-row justify-between relative">
               <div className="aboutSavaHR w-[700px] text-lg leading-7 text-primaryfont">
                 <div className="whatwedo text-3xl">What we do?</div>
                 <div className="whatwedotext mt-6 italic">{aboutSavaHRText}</div>
@@ -92,7 +92,7 @@ export default function Home() {
                 {punchlineText}
               </div> */}
             </div>
-            <div className="md:hidden mobilePunchline flex flex-col items-center container">
+            <div className="md:hidden mobilePunchline flex flex-col items-center max-w-[1129px] w-full">
               <div className="mobile-punchline-heading md:hidden">Human Resource</div>
               <div className="text-center text-primaryfont leading-[50px] p-10 mt-6 text-4xl">{empoweringText}</div>
             </div>
@@ -102,7 +102,7 @@ export default function Home() {
 
 
       <div className="md:hidden mt-24 why p-6 bg-white md:flex md:justify-center">
-        <div className="container md:flex md:mt-40 md:justify-center">
+        <div className="max-w-[1129px]  w-full md:flex md:mt-40 md:justify-center">
             {newJob()} 
         </div>
       </div>
@@ -112,7 +112,7 @@ export default function Home() {
           <div className="hidden md:flex question bg-white text-center text-6xl bold text-primaryfont mt-48 mb-20">
             Why SavaHR?
           </div>
-          <div className="features flex flex-col items-center md:items-start md:flex-row md:flex-wrap md:justify-between md:container">
+          <div className="features flex flex-col items-center md:items-start md:flex-row md:flex-wrap md:justify-between md:max-w-[1129px]  w-full">
             <div className="f1 flex-col flex w-full items-center mt-10 md:justify-between md:w-[400px] 2xl:w-[500px] md:p-6">
               <SchoolIcon className="text-theme !text-[40px]"/>
               <div className="header text-center mt-8 mb-6 text-2xl text-darkthemefont">Industry expertise in IT & government recruitment</div>

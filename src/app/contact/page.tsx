@@ -118,7 +118,7 @@ export default function Contact() {
 
   return (
     <div className="home flex justify-center w-full mt-20 text-primaryfont ">
-      <div className="container p-10 flex justify-between">
+      <div className="max-w-[1129px] w-full p-10 flex justify-between">
         <div className="leftSection md:w-2/5">
           <ContactForm
             heading="Connect with our team"
