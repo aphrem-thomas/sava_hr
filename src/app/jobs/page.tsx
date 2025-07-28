@@ -349,7 +349,7 @@ export default function Jobs() {
             </div>
           </div>
           <div className="pagination w-full flex justify-center">
-            <Pagination className="mt-2" count={10} onChange={handlePageChange}/>
+            <Pagination className="mt-2" count={Math.ceil(jobCount/10)} page={page} onChange={handlePageChange} />
           </div>
         </div>
       </div>
