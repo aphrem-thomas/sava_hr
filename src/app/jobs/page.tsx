@@ -16,6 +16,7 @@ import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import { useEffect, useState } from "react";
 import ContactForm from "@/components/contactForm";
 import DeleteIcon from '@mui/icons-material/Delete';
+import CloseIcon from '@mui/icons-material/Close';
 
 
 export default function Jobs() {
@@ -34,6 +35,9 @@ export default function Jobs() {
   const [locations, setLocations] = useState<any>([])
   const [detailsOpenId, setDetailsOpenId] = useState<string>("")
   const router = useRouter();
+  const [renderCompleted, setRenderCompleted] = useState<boolean>(false);
+
+  const themeColor = "#4cc0b4";
   // To access cookies on the client side
   // Example: get a cookie value by name
   const getCookie = (name: string) => {
@@ -62,7 +66,7 @@ export default function Jobs() {
       setJobs(jobs)
       setRoles([...new Set(jobs.map((job:any) => job.role))])
       setLocations([...new Set(jobs.map((job:any) => job.location))])
-      setJobsListAndCount(jobs);
+      setJobsListAndCount(jobs,page);
       fetch(`/api/job/${jobs[0].id}`,{method:'GET'}).then((resp)=>{
         resp.json().then((data)=>{
           setJobDetails(JSON.parse(data))
@@ -73,11 +77,12 @@ export default function Jobs() {
 
   useEffect(()=>{
     getJobs();
+    setRenderCompleted(true);
   }
 ,[])
 
 
-  const setJobsListAndCount = (jobs:any) => {
+  const setJobsListAndCount = (jobs:any, page:number) => {
     setJoblist(jobs.slice((page-1)*10, (page*10)-1));
     setJobCount(jobs.length);
     if (jobs.length > 0) {
@@ -115,28 +120,29 @@ export default function Jobs() {
       const filteredJobs = jobs.filter((job:any) =>
         job.location.toLowerCase() === selectedLocation.toLowerCase() || job.role.toLowerCase() === selectedRole.toLowerCase()
       );
-      setJobsListAndCount(filteredJobs);
+      setJobsListAndCount(filteredJobs,value);
     }
+    setJobsListAndCount(jobs,value)
   }
 
   const onSearchChange = (e:any) => {
     const searchTerm = e.target.value.toLowerCase();
     setSearchText(searchTerm);
     if (searchTerm === "" && !selectedLocation && !selectedRole) {
-      setJobsListAndCount(jobs);
+      setJobsListAndCount(jobs,page);
     } 
     else if (selectedLocation || selectedRole) {
       const filteredJobs = jobs.filter((job:any) =>
         (job.title.toLowerCase().includes(searchTerm) || job.company.toLowerCase().includes(searchTerm) || job.location.toLowerCase().includes(searchTerm)) &&
         (job.location.toLowerCase() === selectedLocation.toLowerCase() || job.role.toLowerCase() === selectedRole.toLowerCase())
       );
-      setJobsListAndCount(filteredJobs);
+      setJobsListAndCount(filteredJobs, page);
     }
     else {
       const filteredJobs = jobs.filter((job:any) =>
         (job.title.toLowerCase().includes(searchTerm) || job.company.toLowerCase().includes(searchTerm) || job.location.toLowerCase().includes(searchTerm))
       );
-      setJobsListAndCount(filteredJobs);
+      setJobsListAndCount(filteredJobs, page);
     }
   };
 
@@ -168,11 +174,12 @@ export default function Jobs() {
     );
   };
   return (
-    <div className="flex justify-center w-full text-primaryfont bg-[#f4f2ee]">
-      <div className="md:max-w-[1129px] w-full mt-20">
-        <div className="header w-full">
-          <div className="headerText text-4xl">Find your dream job</div>
-          <div className="headertext text-lg mt-4">
+    renderCompleted ? (
+      <div className="flex justify-center w-full text-primaryfont bg-[#f4f2ee]">
+        <div className="md:max-w-[1129px] w-full mt-16">
+        <div className="header w-full p-8 pb-0 md:mt-4 md:pl-0 md:pr-0">
+          <div className="headerText text-3xl md:text-4xl">Find your dream job</div>
+          <div className="headertext text-sm md:text-lg mt-4">
             Search vast list of jobs in Canada
           </div>
           {getCookie('csrf_access_token') && (
@@ -181,7 +188,7 @@ export default function Jobs() {
             </div>
           )}
         </div>
-        <div className="jobs flex flex-col">
+        <div className="jobs flex flex-col p-8 pt-0 md:p-0">
           <div className="filter w-full mt-8">
             <Paper
               component="form"
@@ -196,12 +203,12 @@ export default function Jobs() {
                 if (menuOpen) {
                   setSelectedRole('');
                   setSelectedLocation('');
-                  setJobsListAndCount(jobs);
+                  setJobsListAndCount(jobs, page);
                   setSearchText('');
                 }
                 setMenuOpen(!menuOpen)
                 }} sx={{ p: "10px" }} aria-label="menu">
-                <MenuIcon />
+                {!menuOpen?<MenuIcon />:<CloseIcon/>}
               </IconButton>
               <InputBase
                 sx={{ ml: 1, flex: 1 }}
@@ -229,12 +236,12 @@ export default function Jobs() {
                       const selectedRole = e.target.value as string;
                       setSelectedRole(selectedRole);
                       if (selectedRole === "") {
-                        setJobsListAndCount(jobs);
+                        setJobsListAndCount(jobs, page);
                       } else {
                         const filteredJobs = jobs.filter((job:any) =>
                           job.role.toLowerCase() === selectedRole.toLowerCase()
                         );
-                        setJobsListAndCount(filteredJobs);
+                        setJobsListAndCount(filteredJobs, page);
                       }
                     }
                     }
@@ -258,12 +265,12 @@ export default function Jobs() {
                       const selectedLocation = e.target.value as string;
                       setSelectedLocation(selectedLocation);
                       if (selectedLocation === "") {
-                        setJobsListAndCount(jobs);
+                        setJobsListAndCount(jobs, page);
                       } else {
                         const filteredJobs = jobs.filter((job:any) =>
                           job.location.toLowerCase() === selectedLocation.toLowerCase()
                         );
-                        setJobsListAndCount(filteredJobs);
+                        setJobsListAndCount(filteredJobs, page);
                       }
                     }}
                   >
@@ -275,16 +282,18 @@ export default function Jobs() {
                 </FormControl>
               </div>
             </div>}
-            <div className="jobsSection flex">
-              <div className="joblist h-screen overflow-auto w-full p-2 md:w-[500px]">
+            <div className="jobsSection flex h-screen">
+              <div className="joblist h-full overflow-auto w-full mr-1 md:w-[500px]">
                 {jobList.length?jobList.map((job:any) => 
                     <Card 
                       id={job.id}
+                      key={job.id}
                       variant="outlined"
-                      className="mt-4"
+                      className="mb-1"
                       onClick={()=>{
                         setSelectedJob(job.id)
                         getJobDetails(job.id)
+                        setDetailsOpenId("");
                       }}
                       data-active={selectedJob === job.id ? '' : undefined}
                       sx={{
@@ -323,7 +332,8 @@ export default function Jobs() {
                         <Box>
                           {job.description}
                         </Box>
-                        <Box className="md:hidden" sx={{ fontSize: "16px", color:"#1976d2", mb: "8px"}} onClick={()=>{
+                        <Box className="md:hidden" sx={{ fontSize: "16px", color:"#1976d2", mb: "8px"}} onClick={(e)=>{
+                          e.stopPropagation();
                           if (detailsOpenId === job.id) {
                             setDetailsOpenId("");
                           } else {
@@ -336,10 +346,14 @@ export default function Jobs() {
                         </Box>}
                       </CardContent>
                     </Card>
-                  ):<div>No listing found</div>}
+                  )
+                  :<div>No listing found</div>}
+                  { <div className="pagination w-full flex justify-center">
+                    <Pagination className="mt-2" count={Math.ceil(jobCount/10)} page={page} onChange={handlePageChange} />
+                  </div>}
               </div>
-              <div className="jobDetails w-full mt-4 ml-10 hidden md:block border-[1px] bg-white min-h-[600px] h-full">
-                  {!!Object.keys(jobDetails).length && <div className="jobdetailsSection border-solid p-16">
+              <div className="jobDetails w-full hidden md:block border-[1px] bg-white flex-grow mb-[45px] overflow-auto">
+                  {!!Object.keys(jobDetails).length && <div className="jobdetailsSection border-solid p-12">
                     <div className="companyName">{jobDetails.company}</div>
                     <div className="role text-black text-4xl">{jobDetails.role}</div>
                     <div className="location text-xl mt-2">{jobDetails.location}</div>
@@ -347,9 +361,6 @@ export default function Jobs() {
                   </div>}
               </div>
             </div>
-          </div>
-          <div className="pagination w-full flex justify-center">
-            <Pagination className="mt-2" count={Math.ceil(jobCount/10)} page={page} onChange={handlePageChange} />
           </div>
         </div>
       </div>
@@ -363,6 +374,6 @@ export default function Jobs() {
           <ContactForm jobId={selectedJob}/>
         </Box>
       </Modal>
-    </div>
+    </div>):<></>
   );
 }

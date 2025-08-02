@@ -16,6 +16,8 @@ export default function ContactForm(props:any) {
   const [submitting, setSubmittingState] = useState(false);
   const [experience, setExperience] = useState("");
 
+  const themeColor = "#4cc0b4";
+
   const inputFile:any = useRef(null);
 
   enum statusList {
@@ -180,8 +182,8 @@ export default function ContactForm(props:any) {
                 sx={{
                   height: "60px",
                   marginTop: "10px",
-                  color: "#4cc0b4",
-                  borderColor: "#4cc0b4",
+                  color: themeColor,
+                  borderColor: themeColor,
                   borderWidth:status===statusList.working?"4px":"1px"
                 }}
                 onClick={()=>setStatus(statusList.working)}
@@ -195,8 +197,8 @@ export default function ContactForm(props:any) {
                 sx={{
                   height: "60px",
                   marginTop: "10px",
-                  color: "#4cc0b4",
-                  borderColor: "#4cc0b4",
+                  color: themeColor,
+                  borderColor: themeColor,
                   borderWidth:status===statusList.searching?"4px":"1px"
                 }}
                 variant="outlined"
@@ -212,9 +214,9 @@ export default function ContactForm(props:any) {
                 height: "50px",
                 marginTop: "30px",
                 color: "#FFF",
-                borderColor: "#4cc0b4",
+                borderColor: themeColor,
                 width: "100%",
-                background: "#4cc0b4",
+                background: themeColor,
               }}
               onClick={handleSubmit}
               variant="contained"

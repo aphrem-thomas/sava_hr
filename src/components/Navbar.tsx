@@ -32,7 +32,7 @@ export default function Navbar() {
   return (
     <div className={`w-full flex justify-center items-center fixed z-10 h-16 md:h-28 ${transparentBG?'bg-transparent text-white':'bg-white text-primaryfont border-primaryfont border-b-2 border-solid'}`}>
         <div className="max-w-[1129px] w-full justify-between hidden md:flex">
-            <div className="logo text-4xl font-bold"><a className="ml-4 text-[24px]" href={'/'}>SavaHR</a></div>
+            <div className="logo text-4xl font-bold"><a className=" text-[24px]" href={'/'}>SavaHR</a></div>
             <div className="navigation">
                 {routes.map((item)=>{
                     return(
