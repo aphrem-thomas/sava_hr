@@ -159,7 +159,7 @@ export default function Jobs() {
           <div className="reqHeader text-xl text-black mt-6">Requirements</div>
           <div className="reqs ml-4 mt-2">
             <ul className="list-disc">
-              {jobDetails.requirements.map((item) => (
+              {jobDetails.requirements.map((item:string) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
