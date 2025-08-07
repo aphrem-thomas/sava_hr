@@ -42,7 +42,7 @@ export default function ResponsiveNavbar(props: Props) {
   let transparentThreshold = 0;
   const routes= [
     {id:'jobs', name:'Jobs'},
-    {id:'events', name:'Events'},
+    // {id:'events', name:'Events'},
     {id:'contact', name:'Contact'},
 ]
   if (typeof window !== "undefined") {
@@ -137,7 +137,7 @@ export default function ResponsiveNavbar(props: Props) {
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
              {routes.map((item)=>{
                     return(
-                      <Link href={item.id}>
+                      <Link href={item.id} className="ml-4">
                           <Button onClick={()=>setSelection(item.id)} key={item.id} sx={
                             {
                               fontSize:'24px',

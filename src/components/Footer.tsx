@@ -12,10 +12,10 @@ export default function Footer() {
   return (
     <div className={`w-full bg-white text-white h-screen flex flex-col justify-end`}>
         <div className="footer min-h-[50%] bg-theme flex justify-center">
-           <div className="w-3/4 p-5">
-           <div className="content md:max-w-[1129px] w-full text-white">
+           <div className="md:max-w-[1129px] w-full p-5">
+           <div className="content w-full text-white">
              <div className="logo text-3xl md:text-5xl md:mt-20">
-              <div>SavaHR</div>
+              <div className="text-4xl">SavaHR</div>
               <div className="tagline text-base md:text-xl">Employers best partner and Employees best friend.</div>
               </div>
            </div>

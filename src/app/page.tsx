@@ -112,8 +112,8 @@ export default function Home() {
           <div className="hidden md:flex question bg-white text-center text-6xl bold text-primaryfont mt-48 mb-20">
             Why SavaHR?
           </div>
-          <div className="features flex flex-col items-center md:items-start md:flex-row md:flex-wrap md:justify-between md:max-w-[1129px]  w-full">
-            <div className="f1 flex-col flex w-full items-center mt-10 md:justify-between md:w-[400px] 2xl:w-[500px] md:p-6">
+          <div className="features flex flex-col items-center md:items-start md:flex-row md:flex-wrap md:justify-center md:max-w-[1129px]  w-full">
+            <div className="f1 flex-col flex w-full items-center mt-10 md:justify-between md:w-[400px] 2xl:w-[500px] md:p-6 md:m-6">
               <SchoolIcon className="text-theme !text-[40px]"/>
               <div className="header text-center mt-8 mb-6 text-2xl text-darkthemefont">Industry expertise in IT & government recruitment</div>
               <div className="description text-primaryfont w-full text-center text-[16px] 2xl:text-[20px] font-medium">
@@ -121,7 +121,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="f1 flex-col flex w-full items-center mt-24 md:mt-10 md:w-[400px] 2xl:w-[500px] md:p-6">
+            <div className="f1 flex-col flex w-full items-center mt-24 md:mt-10 md:w-[400px] 2xl:w-[500px] md:p-6 md:m-6">
               <DevicesIcon className="text-theme !text-[40px]"/>
               <div className="header text-center mt-8 mb-6 text-2xl text-darkthemefont">Tailored hiring solutions for employers & job seekers</div>
               <div className="description text-primaryfont text-center text-[16px] 2xl:text-[20px] font-medium">
@@ -129,7 +129,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="f1 flex-col w-full flex items-center mt-24 md:mt-10 md:w-[400px] 2xl:w-[500px] md:p-6">
+            <div className="f1 flex-col w-full flex items-center mt-24 md:mt-10 md:w-[400px] 2xl:w-[500px] md:p-6 md:m-6">
               <VpnLockIcon className="text-theme !text-[40px]"/>
               <div className="header text-center mt-8 mb-6 text-2xl text-darkthemefont">Efficient, reliable, and result-driven approach</div>
               <div className="description text-primaryfont text-center text-[16px] 2xl:text-[20px] font-medium">
