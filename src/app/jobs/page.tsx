@@ -34,6 +34,8 @@ export default function Jobs() {
   const [selectedLocation, setSelectedLocation] = useState<string>('')
   const [locations, setLocations] = useState<any>([])
   const [detailsOpenId, setDetailsOpenId] = useState<string>("")
+  const [fetchingJobs, setFetchingJobs] = useState<boolean>(false);
+  const [fetchingJobDetails, setFetchingJobDetails] = useState<boolean>(false);
   const router = useRouter();
   const [renderCompleted, setRenderCompleted] = useState<boolean>(false);
 
@@ -59,6 +61,7 @@ export default function Jobs() {
   };
 
   const getJobs = () => {
+    setFetchingJobs(true);
     fetch('/api/jobs',{
     method:'GET',
     }).then((res)=> res.json().then((data)=>{
@@ -67,9 +70,12 @@ export default function Jobs() {
       setRoles([...new Set(jobs.map((job:any) => job.role))])
       setLocations([...new Set(jobs.map((job:any) => job.location))])
       setJobsListAndCount(jobs,page);
+      setFetchingJobs(false);
+      setFetchingJobDetails(true);
       fetch(`/api/job/${jobs[0].id}`,{method:'GET'}).then((resp)=>{
         resp.json().then((data)=>{
           setJobDetails(JSON.parse(data))
+          setFetchingJobDetails(false);
         })
       })
     }));
@@ -92,11 +98,13 @@ export default function Jobs() {
 
 
   const getJobDetails = (id:any)=>{
+    setFetchingJobDetails(true);
     fetch(`/api/job/${id}`,{
       method:'GET',
     }).then((resp)=>{
       resp.json().then((data)=>{
         setJobDetails(JSON.parse(data))
+        setFetchingJobDetails(false);
       })
     })
   }
@@ -159,7 +167,7 @@ export default function Jobs() {
           <div className="reqHeader text-xl text-black mt-6">Requirements</div>
           <div className="reqs ml-4 mt-2">
             <ul className="list-disc">
-              {jobDetails.requirements.map((item:string) => (
+              {jobDetails?.requirements?.map((item:string) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
@@ -337,29 +345,33 @@ export default function Jobs() {
                           if (detailsOpenId === job.id) {
                             setDetailsOpenId("");
                           } else {
+                            setSelectedJob(job.id)
+                            getJobDetails(job.id)
                             setDetailsOpenId(job.id);
                           }}}>
                           {detailsOpenId === job.id ? 'Hide Details' : 'Show Details'}
                         </Box>
-                        {detailsOpenId === job.id && <Box>
+                        {detailsOpenId === job.id && (fetchingJobDetails?'Loading...': <Box>
                         {detailsSection()}
-                        </Box>}
+                        </Box>)}
                       </CardContent>
                     </Card>
                   )
-                  :<div>No listing found</div>}
+                  : fetchingJobs?<div>Loading...</div>:<div>No listing found</div>}
                   { <div className="pagination w-full flex justify-center">
                     <Pagination className="mt-2" count={Math.ceil(jobCount/10)} page={page} onChange={handlePageChange} />
                   </div>}
               </div>
-              <div className="jobDetails w-full hidden md:block border-[1px] bg-white flex-grow mb-[45px] overflow-auto">
-                  {!!Object.keys(jobDetails).length && <div className="jobdetailsSection border-solid p-12">
+              {!!Object.keys(jobDetails).length && <div className="jobDetails w-full hidden md:block border-[1px] bg-white flex-grow mb-[45px] overflow-auto">
+                  {!fetchingJobDetails?<div className="jobdetailsSection border-solid p-12">
                     <div className="companyName">{jobDetails.company}</div>
                     <div className="role text-black text-4xl">{jobDetails.role}</div>
                     <div className="location text-xl mt-2">{jobDetails.location}</div>
                     {detailsSection()}
+                  </div>:<div className="flex h-full justify-center items-center text-3xl">
+                    <div>Loading...</div>
                   </div>}
-              </div>
+              </div>}
             </div>
           </div>
         </div>
