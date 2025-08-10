@@ -12,7 +12,7 @@ function loginn(formData:any){
 export default function Login() {
 
   return (
-    <div className="flex flex-col items-center h-40 mt-40">
+    <div className="flex flex-col items-center p-4 h-40 mt-40">
       <form action={loginn}>
         <TextField
                 sx={{marginTop:'10px'}}

@@ -13,7 +13,7 @@ import { Divider, FormControl, InputBase, InputLabel, MenuItem, Modal, Paginatio
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import FmdGoodIcon from '@mui/icons-material/FmdGood';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ContactForm from "@/components/contactForm";
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
@@ -38,6 +38,7 @@ export default function Jobs() {
   const [fetchingJobDetails, setFetchingJobDetails] = useState<boolean>(false);
   const router = useRouter();
   const [renderCompleted, setRenderCompleted] = useState<boolean>(false);
+  const scrollableRef = useRef<HTMLDivElement>(null);
 
   const themeColor = "#4cc0b4";
   // To access cookies on the client side
@@ -105,6 +106,18 @@ export default function Jobs() {
       resp.json().then((data)=>{
         setJobDetails(JSON.parse(data))
         setFetchingJobDetails(false);
+        setTimeout(() => {
+          if (scrollableRef.current && !fetchingJobDetails) {
+            const targetItem = scrollableRef.current.children[id] as HTMLElement;
+            if (targetItem) {
+              const htmlTargetItem = targetItem as HTMLElement;
+              scrollableRef.current.scrollTo({
+                top: htmlTargetItem.offsetTop,
+                behavior: "smooth",
+              });
+            }
+          }
+        }, 200);
       })
     })
   }
@@ -291,7 +304,7 @@ export default function Jobs() {
               </div>
             </div>}
             <div className="jobsSection flex h-screen">
-              <div className="joblist h-full overflow-auto w-full mr-1 md:w-[500px]">
+              <div ref={scrollableRef} className="joblist relative h-full overflow-auto w-full mr-1 md:w-[500px]">
                 {jobList.length?jobList.map((job:any) => 
                     <Card 
                       id={job.id}
@@ -332,7 +345,7 @@ export default function Jobs() {
                           {job.company}
                         </Box>
                         <Box sx={{ color: "text.secondary", mb: "2px" }}>
-                          {job.location}<FmdGoodIcon sx={{marginLeft:'4px'}} fontSize='small'/>
+                          {job.location}<FmdGoodIcon sx={{marginLeft:'4px', fontSize:'12px'}}/>
                         </Box>
                         <Box sx={{ color: "text.secondary", fontSize : "12px", mb: "8px"}}>
                           {new Date(job.date).toLocaleDateString()}
@@ -340,7 +353,7 @@ export default function Jobs() {
                         <Box>
                           {job.description}
                         </Box>
-                        <Box className="md:hidden" sx={{ fontSize: "16px", color:"#1976d2", mb: "8px"}} onClick={(e)=>{
+                        <Box className="md:hidden" sx={{ fontSize: "12px", color:"#1976d2", mb: "8px"}} onClick={(e)=>{
                           e.stopPropagation();
                           if (detailsOpenId === job.id) {
                             setDetailsOpenId("");
