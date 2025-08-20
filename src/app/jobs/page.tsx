@@ -9,7 +9,7 @@ import Button from "@mui/material/Button";
 import { useRouter } from 'next/navigation';
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
-import { Divider, FormControl, InputBase, InputLabel, MenuItem, Modal, Pagination, Paper, Select } from "@mui/material";
+import { Divider, FormControl, InputAdornment, InputBase, InputLabel, MenuItem, Modal, Pagination, Paper, Select, TextField } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import FmdGoodIcon from '@mui/icons-material/FmdGood';
@@ -17,6 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import ContactForm from "@/components/contactForm";
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
+import Footer from "@/components/Footer";
 
 
 export default function Jobs() {
@@ -30,8 +31,8 @@ export default function Jobs() {
   const [roles, setRoles] = useState<any>([])
   const [jobCount, setJobCount] = useState(0)
   const [searchText, setSearchText] = useState<string>('');
-  const [selectedRole, setSelectedRole] = useState<string>('')
-  const [selectedLocation, setSelectedLocation] = useState<string>('')
+  const [selectedRole, setSelectedRole] = useState<string>('All Roles')
+  const [selectedLocation, setSelectedLocation] = useState<string>('All Locations')
   const [locations, setLocations] = useState<any>([])
   const [detailsOpenId, setDetailsOpenId] = useState<string>("")
   const [fetchingJobs, setFetchingJobs] = useState<boolean>(false);
@@ -149,10 +150,10 @@ export default function Jobs() {
   const onSearchChange = (e:any) => {
     const searchTerm = e.target.value.toLowerCase();
     setSearchText(searchTerm);
-    if (searchTerm === "" && !selectedLocation && !selectedRole) {
+    if (searchTerm === "" && selectedLocation==='All Locations' && selectedRole==='All Roles') {
       setJobsListAndCount(jobs,page);
     } 
-    else if (selectedLocation || selectedRole) {
+    else if (selectedLocation!=='All Locations' || selectedRole!=='All Roles') {
       const filteredJobs = jobs.filter((job:any) =>
         (job.title.toLowerCase().includes(searchTerm) || job.company.toLowerCase().includes(searchTerm) || job.location.toLowerCase().includes(searchTerm)) &&
         (job.location.toLowerCase() === selectedLocation.toLowerCase() || job.role.toLowerCase() === selectedRole.toLowerCase())
@@ -187,76 +188,70 @@ export default function Jobs() {
           </div>
         </div>
         <div className="applyButton mt-8">
-          <Button onClick={() => setModalOpen(true)} variant="contained">
+          <Button onClick={() => setModalOpen(true)}
+            sx={{
+              backgroundColor: themeColor,
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: themeColor,
+              },
+            }}
+           variant="contained">
             Apply
           </Button>
         </div>
       </>
     );
   };
-  return (
-    renderCompleted ? (
-      <div className="flex justify-center w-full text-primaryfont bg-[#f4f2ee]">
-        <div className="md:max-w-[1129px] w-full mt-16">
-        <div className="header w-full p-8 pb-0 md:mt-4 md:pl-0 md:pr-0">
-          <div className="headerText text-3xl md:text-4xl">Find your dream job</div>
-          <div className="headertext text-sm md:text-lg mt-4">
-            Search vast list of jobs in Canada
-          </div>
-          {getCookie('csrf_access_token') && (
-            <div className="addjobbutton">
-              <Button onClick={() => router.push('/addjob')} variant="text">Add Job</Button>
-            </div>
-          )}
-        </div>
-        <div className="jobs flex flex-col p-8 pt-0 md:p-0">
-          <div className="filter w-full mt-8">
-            <Paper
-              component="form"
-              sx={{
-                p: "2px 4px",
-                display: "flex",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
-              <IconButton onClick={()=>{
-                if (menuOpen) {
-                  setSelectedRole('');
-                  setSelectedLocation('');
-                  setJobsListAndCount(jobs, page);
-                  setSearchText('');
-                }
-                setMenuOpen(!menuOpen)
-                }} sx={{ p: "10px" }} aria-label="menu">
-                {!menuOpen?<MenuIcon />:<CloseIcon/>}
-              </IconButton>
-              <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                placeholder="Search jobs"
-                onChange={onSearchChange}
-                value={searchText}
-                inputProps={{ "aria-label": "search jobs" }}
-              />
-              <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-                <SearchIcon />
-              </IconButton>
-            </Paper>
-          </div>
-          <div className="listing flex flex-col mt-6">
-            {menuOpen && <div className="filterOptions w-full flex flex-col justify-between md:flex-row h-40 pt-4 pb-4">
+
+  const SearchSection = () => (
+    <div className="w-full">
+                <div className="flex searchSection w-full">
+                <TextField id="standard-basic" variant="standard"
+                  value={searchText}
+                  onChange={onSearchChange}
+                  className="w-full"
+                  slotProps={{
+                    input: {
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      ),
+                      endAdornment: (
+                        <InputAdornment position="start"
+                          className="cursor-pointer"
+                          onClick={()=>{
+                          if (menuOpen) {
+                            setSelectedRole('All Roles');
+                            setSelectedLocation('All Locations');
+                            setJobsListAndCount(jobs, page);
+                            setSearchText('');
+                          }
+                          setMenuOpen(!menuOpen)
+                          }}
+                        >
+                          {!menuOpen?<MenuIcon />:<CloseIcon/>}
+                        </InputAdornment>
+                      )
+                  },
+                }}
+                />
+              </div>
+            {menuOpen && <div className="filterOptions w-full md:w-[350px] flex flex-col justify-between md:flex-row h-40 pt-4 pb-4">
               <div className="role w-full">
-                <FormControl fullWidth>
+                <FormControl fullWidth variant="standard">
                 <InputLabel id="demo-simple-select-label">Role</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     label="Role"
                     className="w-full bg-white"
+                    value={selectedRole}
                     onChange={(e) => {
                       const selectedRole = e.target.value as string;
                       setSelectedRole(selectedRole);
-                      if (selectedRole === "") {
+                      if (selectedRole === "All Roles") {
                         setJobsListAndCount(jobs, page);
                       } else {
                         const filteredJobs = jobs.filter((job:any) =>
@@ -267,7 +262,7 @@ export default function Jobs() {
                     }
                     }
                   >
-                    <MenuItem value="">All Roles</MenuItem>
+                    <MenuItem value="All Roles">All Roles</MenuItem>
                     {roles.map((role:any, index:number) => (
                       <MenuItem key={index} value={role}>{role}</MenuItem>
                     ))}
@@ -275,17 +270,18 @@ export default function Jobs() {
                 </FormControl>
               </div>
               <div className="location w-full mt-2 md:ml-2 md:mt-0">
-                <FormControl fullWidth>
+                <FormControl variant="standard" fullWidth>
                 <InputLabel id="demo-simple-select-label">Location</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     label="Location"
                     className="w-full bg-white"
+                    value={selectedLocation}
                     onChange={(e) => {
                       const selectedLocation = e.target.value as string;
                       setSelectedLocation(selectedLocation);
-                      if (selectedLocation === "") {
+                      if (selectedLocation === "All Locations") {
                         setJobsListAndCount(jobs, page);
                       } else {
                         const filteredJobs = jobs.filter((job:any) =>
@@ -295,7 +291,7 @@ export default function Jobs() {
                       }
                     }}
                   >
-                    <MenuItem value="">All Locations</MenuItem>
+                    <MenuItem value="All Locations">All Locations</MenuItem>
                     {locations.map((location:any, index:number) => (
                       <MenuItem key={index} value={location}>{location}</MenuItem>
                     ))}
@@ -303,6 +299,35 @@ export default function Jobs() {
                 </FormControl>
               </div>
             </div>}
+            </div>
+  )
+
+  return (
+    renderCompleted ? (
+    <>
+      <div className="flex justify-center w-full text-primaryfont">
+        <div className="md:max-w-[1129px] w-full mt-16">
+        <div className="header w-full p-8 pb-0 md:mt-4 md:pl-0 md:pr-0">
+          <div className="flex w-full justify-between">
+            <div className="headerText text-3xl md:text-4xl">Find your dream job</div>
+            <div className="filter w-full md:w-[350px] flex flex-col relative">
+              <div className="absolute w-full hidden md:block">{SearchSection()}</div>
+          </div>
+          </div>
+          <div className="headertext text-sm md:text-lg mt-4">
+            Search vast list of jobs in Canada
+          </div>
+          <div className="md:hidden mt-4 relative">
+            <div>{SearchSection()}</div>
+          </div>
+          {getCookie('csrf_access_token') && (
+            <div className="addjobbutton">
+              <Button onClick={() => router.push('/addjob')} variant="text">Add Job</Button>
+            </div>
+          )}
+        </div>
+        <div className="jobs flex flex-col p-8 pt-0 md:p-0">
+          <div className="listing flex flex-col mt-6">
             <div className="jobsSection flex h-screen">
               <div ref={scrollableRef} className="joblist relative h-full overflow-auto w-full mr-1 md:w-[500px]">
                 {jobList.length?jobList.map((job:any) => 
@@ -310,27 +335,28 @@ export default function Jobs() {
                       id={job.id}
                       key={job.id}
                       variant="outlined"
-                      className="mb-1"
                       onClick={()=>{
                         setSelectedJob(job.id)
                         getJobDetails(job.id)
                         setDetailsOpenId("");
-                      }}
-                      data-active={selectedJob === job.id ? '' : undefined}
-                      sx={{
-                        padding:'2',
-                        cursor: 'pointer',
-                        '&[data-active]': {
+                        }}
+                        data-active={selectedJob === job.id ? '' : undefined}
+                        sx={{
+                          cursor: 'pointer',
+                          ...(selectedJob === job.id && {
+                          borderLeft: `4px solid ${themeColor}`,
+                          }),
+                          '&[data-active]': {
                           backgroundColor: 'action.selected',
                           '&:hover': {
                             backgroundColor: 'action.selectedHover',
                           },
-                        },
-                      }}
-                      >
+                          },
+                        }}
+                        >
                       <CardContent>
                         <Box sx={{ color: "text.secondary", fontSize: "14px" }}>
-                          <Box sx={{  fontSize: "18px" , color: "#1976d2"}}>
+                          <Box sx={{  fontSize: "18px" }}>
                             {job.title}
                             {getCookie('csrf_access_token') && <IconButton type="button" sx={{ p: "10px" }} aria-label="search" onClick={(e)=>{
                             e.stopPropagation();
@@ -371,11 +397,11 @@ export default function Jobs() {
                     </Card>
                   )
                   : fetchingJobs?<div>Loading...</div>:<div>No listing found</div>}
-                  { <div className="pagination w-full flex justify-center">
+                  {jobCount>9 && <div className="pagination w-full flex justify-center">
                     <Pagination className="mt-2" count={Math.ceil(jobCount/10)} page={page} onChange={handlePageChange} />
                   </div>}
               </div>
-              {!!Object.keys(jobDetails).length && <div className="jobDetails w-full hidden md:block border-[1px] bg-white flex-grow mb-[45px] overflow-auto">
+              {!!jobDetails && !!Object.keys(jobDetails).length && <div className="jobDetails w-full hidden md:block border-[1px] bg-white flex-grow mb-[45px] overflow-auto">
                   {!fetchingJobDetails?<div className="jobdetailsSection border-solid p-12">
                     <div className="companyName">{jobDetails.company}</div>
                     <div className="role text-black text-4xl">{jobDetails.role}</div>
@@ -399,6 +425,8 @@ export default function Jobs() {
           <ContactForm jobId={selectedJob}/>
         </Box>
       </Modal>
-    </div>):<></>
+    </div>
+    <Footer/>
+    </>):<></>
   );
 }

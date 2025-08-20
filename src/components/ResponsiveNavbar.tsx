@@ -116,8 +116,8 @@ export default function ResponsiveNavbar(props: Props) {
         sx={{
           backgroundColor:transparentBackground()?'transparent':'#FFF',
           color:transparentBackground()?'#FFF':'#53565A',
-          border:transparentBackground()?'':'1px solid #53565A',
-          boxShadow:'unset',
+          
+          boxShadow: transparentBackground()?'unset':'0px 0px 10px rgba(0, 0, 0, 0.2)',
         }}
         className={`w-full flex justify-center items-center fixed z-10 !h-16  md:h-28`}
       >
